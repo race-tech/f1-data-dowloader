@@ -487,6 +487,10 @@ if __name__ == "__main__":
         key = snake_race_name
         download_files(int(season), kebab_race_name, is_sprint)
 
+        # Ensures csv folder exists
+        filepath = Path(f"csv")
+        filepath.mkdir(parents=True, exist_ok=True)
+
         create_constructor_results()
         create_constructor_standings()
         create_results()
