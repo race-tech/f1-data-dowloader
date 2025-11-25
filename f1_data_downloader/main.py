@@ -1,4 +1,3 @@
-from datetime import date
 from re import sub
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
@@ -470,15 +469,15 @@ def kebab_case(s: str) -> str:
 
 
 if __name__ == "__main__":
-    # Get round number and circuit contry from stdin arguments
-    race_name = sys.argv[1]
+    # Get season, race_name and is_sprint from stdin
+    season = sys.argv[1]
+    race_name = sys.argv[2]
 
     # Transform race name to kebab case and snake case
     snake_race_name = snake_case(race_name)
     kebab_race_name = kebab_case(race_name)
 
-    today = date.today()
-    is_sprint = sys.argv[2] == "true"
+    is_sprint = sys.argv[3] == "true"
 
     # Load contries.json file
     file = open("countries.json", "r")
@@ -486,7 +485,7 @@ if __name__ == "__main__":
 
     try :
         key = snake_race_name
-        download_files(today.year, kebab_race_name, is_sprint)
+        download_files(int(season), kebab_race_name, is_sprint)
 
         create_constructor_results()
         create_constructor_standings()
