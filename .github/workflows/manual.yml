@@ -15,5 +15,9 @@ on:
 
 jobs:
   run-workflow:
-    uses: .github/workflows/download_and_parse.yml
+    uses: ./.github/workflows/download_and_parse.yml
+    with:
+      season: ${{ inputs.season }}
+      grand_prix: ${{ inputs.grand_prix }}
+      is_sprint: ${{ inputs.is_sprint }}
       
