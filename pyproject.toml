@@ -1,9 +1,5 @@
-[tool.pyright]
-venvPath = "."
-venv = ".venv"
-
 [project]
-name = "converter"
+name = "f1-data-dowloader"
 version = "0.1.0"
 description = "A python script to download FIA documents on a specific race and parse the PDF files to convert it to usefull csv data."
 authors = [

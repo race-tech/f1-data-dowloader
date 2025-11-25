@@ -10,17 +10,17 @@ import json
 import sys
 import pandas as pd
 
-from parser.parse_quali import parse_quali_final_classification
-from parser.parse_driver_championship import parse_driver_championship
-from parser.parse_constructor_championship import parse_constructor_championship
-from parser.parse_race_classification import parse_race_final_classification
-from parser.parse_race_history_chart import parse_race_history_chart
-from parser.parse_race_lap_chart import parse_race_lap_chart
-from parser.parse_race_pit_stops import parse_race_pit_stop
+from f1_data_downloader.parser.parse_quali import parse_quali_final_classification
+from f1_data_downloader.parser.parse_driver_championship import parse_driver_championship
+from f1_data_downloader.parser.parse_constructor_championship import parse_constructor_championship
+from f1_data_downloader.parser.parse_race_classification import parse_race_final_classification
+from f1_data_downloader.parser.parse_race_history_chart import parse_race_history_chart
+from f1_data_downloader.parser.parse_race_lap_chart import parse_race_lap_chart
+from f1_data_downloader.parser.parse_race_pit_stops import parse_race_pit_stop
 
-from parser.parse_sprint_history_chart import parse_sprint_history_chart
-from parser.parse_sprint_classification import parse_sprint_final_classification
-from parser.parse_sprint_lap_chart import parse_sprint_lap_chart
+from f1_data_downloader.parser.parse_sprint_history_chart import parse_sprint_history_chart
+from f1_data_downloader.parser.parse_sprint_classification import parse_sprint_final_classification
+from f1_data_downloader.parser.parse_sprint_lap_chart import parse_sprint_lap_chart
 
 base = "https://www.fia.com"
 endpoint = "/events/fia-formula-one-world-championship"
@@ -283,7 +283,7 @@ def to_ms_safe(t: str):
         t_str = "0:" + t_str
         
     td = pd.to_timedelta(t_str, errors="coerce")
-    return None if pd.isna(td) else td.total_seconds() * 1000
+    return None if pd.isna(td) else int(td.total_seconds()) * 1000
 
 def create_results():
     data = parse_race_final_classification("data/race_classification.pdf")
