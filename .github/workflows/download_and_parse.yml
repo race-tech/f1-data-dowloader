@@ -13,8 +13,12 @@ on:
         type: boolean
         default: false
     outputs:
-      artifact-id: ${{ jobs.run-script.steps.upload-artifacts.outputs.artifact-id }}
-      artifact-url: ${{ jobs.run-script.steps.upload-artifacts.outputs.artifact-url }}
+      artifact-id:
+        description: "The artifact id of the workflow output"
+        value: ${{ jobs.run-script.steps.upload-artifacts.outputs.artifact-id }}
+      artifact-url:
+        description: "The artifact url of the workflow output"
+        value: ${{ jobs.run-script.steps.upload-artifacts.outputs.artifact-url }}
 
 jobs:
   run_script:
