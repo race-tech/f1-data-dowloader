@@ -1,4 +1,6 @@
 ---
+name: Download and parse FIA files for a Grand Prix
+
 on:
   workflow_call:
     inputs:
@@ -30,7 +32,7 @@ jobs:
       - name: Check season input is a number
         shell: bash
         run: |
-          if ! [[ "$scale" =~ ^[0-9]+$ ]]
+          if ! [[ ${{ inputs.season }} =~ ^[0-9]+$ ]]
             then
               exit 1
           fi
