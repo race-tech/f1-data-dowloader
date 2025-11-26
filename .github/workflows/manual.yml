@@ -20,4 +20,3 @@ jobs:
       season: ${{ inputs.season }}
       grand_prix: ${{ inputs.grand_prix }}
       is_sprint: ${{ inputs.is_sprint }}
-      
