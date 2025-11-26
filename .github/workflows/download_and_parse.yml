@@ -1,5 +1,6 @@
 ---
 name: Download and parse FIA files for a Grand Prix
+run-name: Download and parse data for ${{ inputs.grand_prix }} of season ${{ inputs.season }}
 
 on:
   workflow_call:
