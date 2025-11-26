@@ -31,6 +31,10 @@ decision_documents_files = [
         "fia_filename": "final_race_classification"
     },
     {
+        "pdf_filename": "quali_classification",
+        "fia_filename": "final_qualifying_classification"
+    },
+    {
         "pdf_filename": "starting_grid",
         "fia_filename": "final_starting_grid",
     }
@@ -57,9 +61,6 @@ events_titles = {
         "race_history_chart": [
             "History Chart"
         ]
-    },
-    "QUALIFYING": {
-        "quali_classification": ["Provisional Classification", "Classification"]
     },
     "SPRINT RACE": {
         "sprint_classification": ["Provisional Classification", "Sprint Provisional Classification", "Classification"],
@@ -170,7 +171,6 @@ def download_files(year: int, kebab_race_name: str, snake_race_name: str, is_spr
 
     files_url = {
         "RACE": [],
-        "QUALIFYING": [],
         "SPRINT RACE": [],
     }
     current_header = ""
