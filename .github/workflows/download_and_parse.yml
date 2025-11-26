@@ -3,9 +3,11 @@ on:
   workflow_call:
     inputs:
       season:
+        description: The year of the season to analyze
         required: true
-        type: number
+        type: string
       grand_prix:
+        description: The grand prix name to analyze (name given by the FIA)
         required: true
         type: string
       is_sprint:
@@ -25,6 +27,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Check season input is a number
+        shell: bash
+        run: |
+          if ! [[ "$scale" =~ ^[0-9]+$ ]]
+            then
+              exit 1
+          fi
+      
       - name: Checkout code
         uses: actions/checkout@v6
 
