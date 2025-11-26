@@ -72,19 +72,6 @@ events_titles = {
     }
 }
 
-entrant_mapping = {
-    "Oracle Red Bull Racing": "Red Bull",
-    "McLaren Formula 1 Team": "McLaren",
-    "Mercedes-AMG PETRONAS F1 Team": "Mercedes",
-    "Aston Martin Aramco F1 Team": "Aston Martin",
-    "Scuderia Ferrari HP": "Ferrari",
-    "Atlassian Williams Racing": "Williams",
-    "BWT Alpine F1 Team": "Alpine F1 Team",
-    "MoneyGram Haas F1 Team": "Haas F1 Team",
-    "Visa Cash App Racing Bulls F1 Team": "RB F1 Team",
-    "Stake F1 Team Kick Sauber": "Sauber",
-}
-
 entrant_id_mapping = {
     "Oracle Red Bull Racing": 9,
     "McLaren Formula 1 Team": 1,
@@ -272,10 +259,10 @@ def download_files(year: int, kebab_race_name: str, snake_race_name: str, is_spr
 
 def create_constructor_results():
     data = parse_race_final_classification("data/race_classification.pdf")
-    data['entrant'] = data['entrant'].map(lambda x: entrant_mapping.get(x))
-    data = data[['entrant', 'points']]
+    data['constructor_id'] = data['entrant'].map(lambda x: entrant_id_mapping.get(x))
+    data = data[['constructor_id', 'points']]
     data['points'] = data['points'].astype('Int64')
-    result = data.groupby("entrant", as_index=False)["points"].sum()
+    result = data.groupby("constructor_id", as_index=False)["points"].sum()
     result.to_csv("csv/constructor_results.csv", index=False)
 
     print("----- CSV file created for constructor results -----")
@@ -283,11 +270,11 @@ def create_constructor_results():
 def create_constructor_standings():
     data = parse_constructor_championship("data/constructors_championship.pdf")
     data['position'] = data['pos']
-    data['positionText'] = data['pos']
+    data['position_text'] = data['pos']
     data['points'] = data['total']
-    data['entrant'] = data['entrant'].map(lambda x: entrant_mapping.get(x))
+    data['constructor_id'] = data['entrant'].map(lambda x: entrant_id_mapping.get(x))
 
-    data = data[['entrant', 'points', 'position', 'positionText', 'wins']]
+    data = data[['constructor_id', 'points', 'position', 'position_text', 'wins']]
 
     data.to_csv("csv/constructor_standings.csv", index=False)
 
