@@ -2,12 +2,13 @@ from re import sub
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from bs4.element import Tag
-
 import requests
+import pandas as pd
+
 from pathlib import Path
 import json
 import sys
-import pandas as pd
+import traceback
 
 from f1_data_downloader.parser.parse_quali import parse_quali_final_classification
 from f1_data_downloader.parser.parse_driver_championship import parse_driver_championship
@@ -16,6 +17,7 @@ from f1_data_downloader.parser.parse_race_classification import parse_race_final
 from f1_data_downloader.parser.parse_race_history_chart import parse_race_history_chart
 from f1_data_downloader.parser.parse_race_lap_chart import parse_race_lap_chart
 from f1_data_downloader.parser.parse_race_pit_stops import parse_race_pit_stop
+from f1_data_downloader.parser.parse_starting_grid import parse_starting_grid
 
 from f1_data_downloader.parser.parse_sprint_history_chart import parse_sprint_history_chart
 from f1_data_downloader.parser.parse_sprint_classification import parse_sprint_final_classification
@@ -296,9 +298,11 @@ def to_ms_safe(t: str):
 
 def create_results():
     data = parse_race_final_classification("data/race_classification.pdf")
+    grid_data = parse_starting_grid("data/starting_grid.pdf")
     
     data = data.reset_index(drop=True)
     data['driver_id'] = data['driver_no'].map(lambda x: driver_no_mapping.get(int(x)))
+    data['driver_no'] = data['driver_no'].astype(int)
     data['constructor_id'] = data['entrant'].map(lambda x: entrant_id_mapping.get(x))
     data['position'] = data.index + 1
 
@@ -332,6 +336,11 @@ def create_results():
         'rank',
         'fastest_lap_speed',
     ]]
+
+    grid_data = grid_data.reset_index().rename(columns={"index": "grid"})
+    grid_data['grid'] = grid_data['grid'] + 1
+
+    data = data.merge(grid_data[['car', 'grid']], left_on='driver_no', right_on='car', how='left').drop(columns=['car'])
 
     data.to_csv("csv/results.csv", index=False)
 
@@ -496,6 +505,8 @@ if __name__ == "__main__":
     try :
         download_files(int(season), kebab_race_name, snake_race_name, is_sprint)
 
+        print("----- Parsing file -----")
+
         # Ensures csv folder exists
         filepath = Path(f"csv")
         filepath.mkdir(parents=True, exist_ok=True)
@@ -514,4 +525,5 @@ if __name__ == "__main__":
             
     except Exception as e:
         print(e)
+        print(traceback.format_exc()) 
         exit(1)
