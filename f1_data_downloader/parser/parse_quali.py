@@ -2,15 +2,17 @@
 import pymupdf as fitz
 import pandas as pd
 import re
+import logging
 
 from f1_data_downloader.parser.utils import get_image_header
 
+logger = logging.getLogger(__name__)
 
 def parse_quali_final_classification(file: str) -> pd.DataFrame:
     """Parse "Qualifying Session Final Classification" PDF"""
     # Find the page with "Qualifying Session Final Classification"
     doc = fitz.open(file)
-    found = None
+    found = []
     page = None
     for i in range(len(doc)):
         page = doc[i]
@@ -21,8 +23,7 @@ def parse_quali_final_classification(file: str) -> pd.DataFrame:
             break
         found = page.search_for('Provisional Classification')
         if found:
-            #WARN
-            print('Found and using provisional classification, not the final one')
+            logger.warning('Found and using provisional classification, not the final one')
             break
         else:
             found = get_image_header(page)
