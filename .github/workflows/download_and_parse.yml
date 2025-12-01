@@ -20,7 +20,7 @@ on:
     outputs:
       artifact-id:
         description: "The artifact id of the workflow output"
-        value: ${{ jobs.run-script.steps.upload-artifacts.outputs.artifact-id }}
+        value: ${{ jobs.run-script.outputs.artifact-id }}
       run-id:
         description: The run id of this workflow.
         value: ${{ github.run_id }}
@@ -28,6 +28,9 @@ on:
 jobs:
   run-script:
     runs-on: ubuntu-latest
+
+    outputs:
+      artifact-id: ${{ steps.upload-artifacts.outputs.artifact-id }}
 
     steps:
       - name: Check inputs
